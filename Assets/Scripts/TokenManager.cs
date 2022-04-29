@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
+
 
 public class TokenManager : MonoBehaviour
 {
@@ -14,6 +14,8 @@ public class TokenManager : MonoBehaviour
     private Vector3 position;
     private TokenData token;
     private int id;
+    private int materialMatch;
+    
 
 
     private void Start()
@@ -35,7 +37,6 @@ public class TokenManager : MonoBehaviour
                
                GameObject t= Instantiate(prefabToken, position, prefabToken.transform.rotation,transform);
                token = t.GetComponentInChildren<TokenData>();
-               token.SetId(SetId());
                token.SetMaterial(SetMaterial());
                tokens.Add(token);
 
@@ -43,18 +44,34 @@ public class TokenManager : MonoBehaviour
         }
     }
 
-    private int SetId()
-    {
-        if (id == 10) id = 0;
-        id++;
-        return id;
-    }
-    
     private Material SetMaterial()
     {
-        
+        Material m;
+        do
+        {
+          m = colors[Random.Range(0,colors.Count-1)];
+          
+        } while (!CheckMaterial(m));
+        return m;
     }
-    
+
+
+    private bool CheckMaterial(Material m)
+    {
+        int match=0;
+        if (tokens.Count != 0)
+        { 
+            foreach (TokenData t in tokens)
+            {
+                if ( t.GetMaterial().color == m.color)
+                    match++;
+            }
+        }
+        
+        if (match > 1) return false;
+        if (match == 1) colors.Remove(m);
+        return true;
+    }
     
     
 }
