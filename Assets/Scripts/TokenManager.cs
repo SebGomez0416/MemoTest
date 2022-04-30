@@ -1,5 +1,9 @@
+using System;
 using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 
 public class TokenManager : MonoBehaviour
@@ -13,15 +17,27 @@ public class TokenManager : MonoBehaviour
     [SerializeField] private int offSetY;
     private Vector3 position;
     private TokenData token;
+    private TokenData tokenOne;
+    private TokenData tokenTwo;
     private int id;
-    private int materialMatch;
-    
-
-
+    public delegate void ResetToken();
+    public static ResetToken OnResetToken;
+    [SerializeField] private Vector3 rotateBack;
     private void Start()
     {
         SpawnBoard();
     }
+
+    private void OnEnable()
+    {
+        RotateToken.OnSendToken +=GetToken;
+    }
+
+    private void OnDisable()
+    {
+        RotateToken.OnSendToken -=GetToken;
+    }
+
     private void SpawnBoard()
     {
         for (int i = 0; i < high; i++)
@@ -38,12 +54,17 @@ public class TokenManager : MonoBehaviour
                GameObject t= Instantiate(prefabToken, position, prefabToken.transform.rotation,transform);
                token = t.GetComponentInChildren<TokenData>();
                token.SetMaterial(SetMaterial());
+               token.SetId(SetId());
                tokens.Add(token);
 
             }
         }
     }
-
+    private int SetId()
+    {
+        id++;
+        return id;
+    }
     private Material SetMaterial()
     {
         Material m;
@@ -51,12 +72,10 @@ public class TokenManager : MonoBehaviour
         {
           m = colors[Random.Range(0,colors.Count-1)];
           
-        } while (!CheckMaterial(m));
+        } while (!AddMaterial(m));
         return m;
     }
-
-
-    private bool CheckMaterial(Material m)
+    private bool AddMaterial(Material m)
     {
         int match=0;
         if (tokens.Count != 0)
@@ -72,6 +91,42 @@ public class TokenManager : MonoBehaviour
         if (match == 1) colors.Remove(m);
         return true;
     }
+
+    private void GetToken(TokenData t)
+    {
+        if (tokenOne == null)
+            tokenOne = t;
+        else
+        {
+            tokenTwo = t;
+            TokenMatch();
+        }
+    }
     
+    private void TokenMatch()
+    {
+        if (tokenOne.GetMaterial().color == tokenTwo.GetMaterial().color)
+        {
+            Debug.Log("Match");
+            tokenOne = null;
+            tokenTwo = null;
+        }
+           
+        else Invoke("RestoreToken",0.5f);
+    }
+
+    private void RestoreToken()
+    {
+        //pregruntar 
+        foreach (var t in tokens.Where(t => tokenOne.GetId()== t.GetId()||tokenTwo.GetId()== t.GetId()))
+        {
+            t.GetComponentInParent<RotateToken>().Rotate(rotateBack);
+        }
+        
+        OnResetToken?.Invoke();
+        tokenOne = null;
+        tokenTwo = null;
+    }
+
     
 }

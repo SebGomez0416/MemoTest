@@ -94,6 +94,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c56fec0d89c4d3f458b99776e87f0c4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _id: 0
 --- !u!1 &6883900741189318706
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,7 +154,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9349c951a6c769b4e9e154e3a0b5147f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotate: {x: 90, y: 0, z: 180}
+  rotateFront: {x: 90, y: 0, z: 180}
+  rotateBack: {x: 90, y: 0, z: 0}
 --- !u!1 &6883900741316553686
 GameObject:
   m_ObjectHideFlags: 0
