@@ -107,7 +107,7 @@ public class TokenManager : MonoBehaviour
             tokenOne = null;
             tokenTwo = null;
         }
-        else Invoke("RestoreToken",0.5f);
+        else Invoke("RestoreToken",0.3f);
     }
 
     private void RestoreToken()
@@ -116,8 +116,8 @@ public class TokenManager : MonoBehaviour
         {
             if(tokenOne.GetId()== t.GetId()||tokenTwo.GetId()== t.GetId())
               t.GetComponentInParent<RotateToken>().Rotate(rotateBack);
+              t.GetComponentInParent<RotateToken>().ResetToken();
         }
-        ResetToken?.Invoke();
         tokenOne = null;
         tokenTwo = null;
     }
