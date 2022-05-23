@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class RotateToken : MonoBehaviour
@@ -5,8 +6,7 @@ public class RotateToken : MonoBehaviour
     [SerializeField] private Vector3 rotateFront;
     private TokenData t;
     private bool isMatch;
-    public delegate void SendToken(TokenData t);
-    public static SendToken OnSendToken;
+    public static event Action <TokenData > SendToken;
 
     private void Awake()
     {
@@ -14,21 +14,21 @@ public class RotateToken : MonoBehaviour
     }
     private void OnEnable()
     {
-        TokenManager.OnResetToken += ResetToken;
+        TokenManager.ResetToken += OnResetToken;
     }
     private void OnDisable()
     {
-        TokenManager.OnResetToken -= ResetToken;
+        TokenManager.ResetToken -= OnResetToken;
     }
     private void OnMouseDown()
     {
         if (isMatch) return;
         Rotate(rotateFront);
-        OnSendToken?.Invoke(t);
+        SendToken?.Invoke(t);
         isMatch = true;
     }
 
-    private void ResetToken()
+    private void OnResetToken()
     {
         isMatch = false;
     }

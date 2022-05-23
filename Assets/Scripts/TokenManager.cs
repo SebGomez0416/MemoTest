@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
-
 
 public class TokenManager : MonoBehaviour
 {
@@ -20,9 +17,9 @@ public class TokenManager : MonoBehaviour
     private TokenData tokenOne;
     private TokenData tokenTwo;
     private int id;
-    public delegate void ResetToken();
-    public static ResetToken OnResetToken;
+    public static event Action ResetToken;
     [SerializeField] private Vector3 rotateBack;
+    
     private void Start()
     {
         SpawnBoard();
@@ -30,12 +27,12 @@ public class TokenManager : MonoBehaviour
 
     private void OnEnable()
     {
-        RotateToken.OnSendToken +=GetToken;
+        RotateToken.SendToken +=OnGetToken;
     }
 
     private void OnDisable()
     {
-        RotateToken.OnSendToken -=GetToken;
+        RotateToken.SendToken -=OnGetToken;
     }
 
     private void SpawnBoard()
@@ -56,7 +53,6 @@ public class TokenManager : MonoBehaviour
                token.SetMaterial(SetMaterial());
                token.SetId(SetId());
                tokens.Add(token);
-
             }
         }
     }
@@ -92,7 +88,7 @@ public class TokenManager : MonoBehaviour
         return true;
     }
 
-    private void GetToken(TokenData t)
+    private void OnGetToken(TokenData t)
     {
         if (tokenOne == null)
             tokenOne = t;
@@ -111,19 +107,17 @@ public class TokenManager : MonoBehaviour
             tokenOne = null;
             tokenTwo = null;
         }
-           
         else Invoke("RestoreToken",0.5f);
     }
 
     private void RestoreToken()
     {
-        //pregruntar 
-        foreach (var t in tokens.Where(t => tokenOne.GetId()== t.GetId()||tokenTwo.GetId()== t.GetId()))
+        foreach (var t in tokens)
         {
-            t.GetComponentInParent<RotateToken>().Rotate(rotateBack);
+            if(tokenOne.GetId()== t.GetId()||tokenTwo.GetId()== t.GetId())
+              t.GetComponentInParent<RotateToken>().Rotate(rotateBack);
         }
-        
-        OnResetToken?.Invoke();
+        ResetToken?.Invoke();
         tokenOne = null;
         tokenTwo = null;
     }
