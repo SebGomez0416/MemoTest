@@ -22,7 +22,7 @@ public class TokenManager : MonoBehaviour
     
     public static event Action SendTry;
     public static event Action SendMatch;
-    
+
     private void Start()
     {
         SpawnBoard();
