@@ -8,6 +8,8 @@ public class UI : MonoBehaviour
 {
     [SerializeField] private Text textClock;
     [SerializeField] private Text textTry;
+    [SerializeField] private GameObject Match;
+    
     private int turns;
     private bool timerBool;
     private float currentTime;
@@ -27,13 +29,26 @@ public class UI : MonoBehaviour
     private void OnEnable()
     {
         TokenManager.SendTry += OnSendTry;
+        TokenManager.SendMatch += OnSendMatch;
     }
 
     private void OnDisable()
     {
         TokenManager.SendTry -= OnSendTry;
+        TokenManager.SendMatch -= OnSendMatch;
     }
 
+    private void OnSendMatch()
+    {
+        Match.SetActive(true);
+        Invoke("SetMatch",1f);
+    }
+
+    private void SetMatch()
+    {
+        Match.SetActive(false);
+    }
+    
     private void OnSendTry()
     {
         turns ++;

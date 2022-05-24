@@ -21,6 +21,7 @@ public class TokenManager : MonoBehaviour
     [SerializeField] private Vector3 rotateBack;
     
     public static event Action SendTry;
+    public static event Action SendMatch;
     
     private void Start()
     {
@@ -109,7 +110,7 @@ public class TokenManager : MonoBehaviour
     {
         if (tokenOne.GetMaterial().color == tokenTwo.GetMaterial().color)
         {
-            Debug.Log("Match");
+            SendMatch?.Invoke();
             tokenOne = null;
             tokenTwo = null;
         }
