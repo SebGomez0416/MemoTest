@@ -64,4 +64,15 @@ public class UI : MonoBehaviour
         }
     }
 
+
+    public void Reload()
+    {
+        SceneManager.LoadScene("Gameplay");
+    }
+
+    public void ChangScene()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
 }
