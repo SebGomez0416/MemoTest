@@ -8,8 +8,11 @@ public class UI : MonoBehaviour
 {
     [SerializeField] private Text textClock;
     [SerializeField] private Text textTry;
-    [SerializeField] private GameObject Match;
-    
+    [SerializeField] private GameObject match;
+    [SerializeField] private GameObject gameOver;
+
+    private int _match;
+    private int tokensMatch = 10;
     private int turns;
     private bool timerBool;
     private float currentTime;
@@ -37,18 +40,20 @@ public class UI : MonoBehaviour
         TokenManager.SendTry -= OnSendTry;
         TokenManager.SendMatch -= OnSendMatch;
     }
-
+    
     private void OnSendMatch()
     {
-        Match.SetActive(true);
+        _match++;
+        GameOver();
+        match.SetActive(true);
         Invoke("SetMatch",1f);
     }
 
     private void SetMatch()
     {
-        Match.SetActive(false);
+        match.SetActive(false);
     }
-    
+
     private void OnSendTry()
     {
         turns ++;
@@ -79,7 +84,6 @@ public class UI : MonoBehaviour
         }
     }
 
-
     public void Reload()
     {
         SceneManager.LoadScene("Gameplay");
@@ -88,6 +92,13 @@ public class UI : MonoBehaviour
     public void ChangScene()
     {
         SceneManager.LoadScene("Menu");
+    }
+
+    private void GameOver()
+    {
+        if (_match != tokensMatch) return;
+        gameOver.SetActive(true);
+        EndTime();
     }
 
 }
