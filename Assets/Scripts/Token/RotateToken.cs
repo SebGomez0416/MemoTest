@@ -7,7 +7,7 @@ public class RotateToken : MonoBehaviour
     private TokenData t;
     [SerializeField] private bool isMatch;
     public static event Action <TokenData > SendToken;
-    
+    public static event Action  SelectToken;
     private void Awake()
     {
         t = GetComponentInChildren<TokenData>();
@@ -16,7 +16,8 @@ public class RotateToken : MonoBehaviour
     {
         if (isMatch) return;
         Rotate(rotateFront);
-        SendToken?.Invoke(t); 
+        SendToken?.Invoke(t);
+        SelectToken?.Invoke();
         isMatch = true;
     }
     public void ResetToken()
