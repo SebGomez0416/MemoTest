@@ -16,7 +16,7 @@ public class LoadCredits : MonoBehaviour
     {
         FileStream fs = File.OpenRead("Assets/Art/Data/Credits.txt");
         StreamReader sr = new StreamReader(fs);
-        credits.text = sr.ReadToEnd();   
+        credits.text = sr.ReadToEnd();  
 
         sr.Close();
         fs.Close();        
