@@ -12,13 +12,15 @@ public class TokenManager : MonoBehaviour
     [SerializeField] private int width;
     [SerializeField] private int offSetX;
     [SerializeField] private int offSetY;
+    
     private Vector3 position;
     private TokenData token;
     private TokenData tokenOne;
     private TokenData tokenTwo;
     private int id;
-    public static event Action ResetToken;
     [SerializeField] private Vector3 rotateBack;
+    
+    public static event Action SendTry;
     
     private void Start()
     {
@@ -34,7 +36,7 @@ public class TokenManager : MonoBehaviour
     {
         RotateToken.SendToken -=OnGetToken;
     }
-
+    
     private void SpawnBoard()
     {
         for (int i = 0; i < high; i++)
@@ -56,11 +58,13 @@ public class TokenManager : MonoBehaviour
             }
         }
     }
+    
     private int SetId()
     {
         id++;
         return id;
     }
+    
     private Material SetMaterial()
     {
         Material m;
@@ -71,6 +75,7 @@ public class TokenManager : MonoBehaviour
         } while (!AddMaterial(m));
         return m;
     }
+    
     private bool AddMaterial(Material m)
     {
         int match=0;
@@ -96,6 +101,7 @@ public class TokenManager : MonoBehaviour
         {
             tokenTwo = t;
             TokenMatch();
+            SendTry?.Invoke();
         }
     }
     
