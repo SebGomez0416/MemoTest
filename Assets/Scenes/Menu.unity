@@ -326,17 +326,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Developed by
-
-
-    Juan Sebastian Gomez
-
-
-
-
-    Sound FX
-
-    https://freesfx.co.uk/
+  m_Text: '
 
 '
 --- !u!222 &165385645
@@ -588,6 +578,7 @@ GameObject:
   - component: {fileID: 694043463}
   - component: {fileID: 694043465}
   - component: {fileID: 694043464}
+  - component: {fileID: 694043466}
   m_Layer: 5
   m_Name: ScreenCredits
   m_TagString: Untagged
@@ -654,6 +645,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 694043462}
   m_CullTransparentMesh: 1
+--- !u!114 &694043466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 694043462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce1b6d5b96ff9a644815aa82b0893325, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &802061688
 GameObject:
   m_ObjectHideFlags: 0
