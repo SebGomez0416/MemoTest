@@ -11,7 +11,9 @@ public class UI : MonoBehaviour
     [SerializeField] private GameObject match;
     [SerializeField] private GameObject gameOver;
     [SerializeField] private AudioSource _audioSource;
+    public static event Action <string ,int > ChangeHighScore;
 
+    private string _name; 
     private int _match;
     private int tokensMatch = 10;
     private int turns;
@@ -29,6 +31,7 @@ public class UI : MonoBehaviour
     private void Start()
     {
         InitTimer();
+        _name = DataBetweenScenes.instance._name;
     }
 
     private void OnEnable()
@@ -113,6 +116,7 @@ public class UI : MonoBehaviour
     private void GameOver()
     {
         if (_match != tokensMatch) return;
+        ChangeHighScore?.Invoke(_name,turns);
         gameOver.SetActive(true);
         EndTime();
     }

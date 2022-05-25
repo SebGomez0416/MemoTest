@@ -3,11 +3,11 @@ using UnityEngine.UI;
 
 public class SendName : MonoBehaviour
 {
-   [SerializeField] private Text name;
+   [SerializeField] private Text _name;
 
 
    private void OnDestroy()
    {
-      DataBetweenScenes.instance._name = name.text;
+      DataBetweenScenes.instance._name = _name.text;
    }
 }
