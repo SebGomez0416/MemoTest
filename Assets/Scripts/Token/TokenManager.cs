@@ -18,10 +18,12 @@ public class TokenManager : MonoBehaviour
     private TokenData tokenOne;
     private TokenData tokenTwo;
     private int id;
+    private int amountTokens;
     [SerializeField] private Vector3 rotateBack;
     
     public static event Action SendTry;
     public static event Action SendMatch;
+    public static event Action BlockTokens;
 
     private void Start()
     {
@@ -96,6 +98,9 @@ public class TokenManager : MonoBehaviour
 
     private void OnGetToken(TokenData t)
     {
+        amountTokens++;
+        if (amountTokens==2) BlockTokens?.Invoke();
+            
         if (tokenOne == null)
             tokenOne = t;
         else
@@ -113,20 +118,26 @@ public class TokenManager : MonoBehaviour
             SendMatch?.Invoke();
             tokenOne = null;
             tokenTwo = null;
+            amountTokens=0;
+            BlockTokens?.Invoke();
         }
-        else Invoke("RestoreToken",0.3f);
+        else Invoke("RestoreToken",0.5f);
     }
 
     private void RestoreToken()
     {
         foreach (var t in tokens)
         {
-            if(tokenOne.GetId()== t.GetId()||tokenTwo.GetId()== t.GetId())
-              t.GetComponentInParent<RotateToken>().Rotate(rotateBack);
-              t.GetComponentInParent<RotateToken>().ResetToken();
+            if (tokenOne.GetId() == t.GetId() || tokenTwo.GetId() == t.GetId())
+            {
+                t.GetComponentInParent<RotateToken>().Rotate(rotateBack);
+                t.GetComponentInParent<RotateToken>().ResetToken();
+            }
         }
         tokenOne = null;
         tokenTwo = null;
+        amountTokens=0;
+        BlockTokens?.Invoke();
     }
 
     
