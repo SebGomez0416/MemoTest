@@ -10,6 +10,7 @@ public class UI : MonoBehaviour
     [SerializeField] private Text textTry;
     [SerializeField] private GameObject match;
     [SerializeField] private GameObject gameOver;
+    [SerializeField] private AudioSource _audioSource;
 
     private int _match;
     private int tokensMatch = 10;
@@ -17,6 +18,7 @@ public class UI : MonoBehaviour
     private bool timerBool;
     private float currentTime;
     private TimeSpan timer;
+    private bool isMute;
 
     private void Awake()
     {
@@ -69,7 +71,7 @@ public class UI : MonoBehaviour
 
     private void EndTime()
     {
-        timerBool = false;
+       timerBool = false;
     }
 
     private IEnumerator UpdateTime()
@@ -84,6 +86,20 @@ public class UI : MonoBehaviour
         }
     }
 
+    public void Mute()
+    {
+        if (!isMute)
+        {
+            isMute = true;
+            _audioSource.Pause();
+        }
+        else
+        {
+            isMute = false;
+            _audioSource.Play();
+        }
+    }
+    
     public void Reload()
     {
         SceneManager.LoadScene("Gameplay");
